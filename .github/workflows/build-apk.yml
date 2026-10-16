@@ -30,7 +30,11 @@ jobs:
           flutter create --org com.dastyarmoalem --project-name teacher_assistant temp_project
           cp -r lib/* temp_project/lib/
           cp pubspec.yaml temp_project/
-          # Update Kotlin version only in build.gradle (old style)
+          # Update Kotlin version in settings.gradle (new Flutter style)
+          if [ -f temp_project/android/settings.gradle ]; then
+            sed -i 's/id "org.jetbrains.kotlin.android" version "[0-9.]*"/id "org.jetbrains.kotlin.android" version "2.1.10"/' temp_project/android/settings.gradle || true
+          fi
+          # Fallback for old style
           if grep -q "ext.kotlin_version" temp_project/android/build.gradle 2>/dev/null; then
             sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = '\''2.1.10'\''/' temp_project/android/build.gradle
           fi
