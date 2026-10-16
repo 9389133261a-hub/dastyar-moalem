@@ -30,6 +30,9 @@ jobs:
           flutter create --org com.dastyarmoalem --project-name teacher_assistant temp_project
           cp -r lib/* temp_project/lib/
           cp pubspec.yaml temp_project/
+          # Update Kotlin version
+          sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = '\''2.1.0'\''/' temp_project/android/build.gradle || true
+          sed -i 's/compileSdkVersion .*/compileSdk 36/' temp_project/android/app/build.gradle || true
           cd temp_project
           flutter pub get
 
