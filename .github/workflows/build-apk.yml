@@ -30,17 +30,19 @@ jobs:
           flutter create --org com.dastyarmoalem --project-name teacher_assistant temp_project
           cp -r lib/* temp_project/lib/
           cp pubspec.yaml temp_project/
-          # Update Kotlin version in settings.gradle (new Flutter style)
+          # Update Kotlin version
           if [ -f temp_project/android/settings.gradle ]; then
-            sed -i 's/id "org.jetbrains.kotlin.android" version "[0-9.]*"/id "org.jetbrains.kotlin.android" version "2.1.10"/' temp_project/android/settings.gradle || true
+            sed -i 's/version "[0-9.]*"/version "2.1.10"/g' temp_project/android/settings.gradle || true
           fi
-          # Fallback for old style
           if grep -q "ext.kotlin_version" temp_project/android/build.gradle 2>/dev/null; then
             sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = '\''2.1.10'\''/' temp_project/android/build.gradle
           fi
-          # Update compileSdk
+          # Update compileSdk and disable minify
           sed -i 's/compileSdkVersion .*/compileSdk 36/' temp_project/android/app/build.gradle || true
           sed -i 's/compileSdk = .*/compileSdk = 36/' temp_project/android/app/build.gradle || true
+          # Disable R8/minify to avoid missing class errors for now
+          sed -i 's/minifyEnabled true/minifyEnabled false/' temp_project/android/app/build.gradle || true
+          sed -i 's/shrinkResources true/shrinkResources false/' temp_project/android/app/build.gradle || true
           cd temp_project
           flutter pub get
 
