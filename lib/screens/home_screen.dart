@@ -56,12 +56,11 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             if (!provider.isPremium)
-              BannerAd(
-                "ab260825-0d0b-4068-b657-a191dcb86628", // شناسه بنر ثابت پایین از پنل ادیوری
-                BannerAdSize.BANNER,
-                onAdLoaded: (ad) => print("Banner loaded"),
-                onAdClicked: (ad) => print("Banner clicked"),
-                onError: (ad, error) => print("Banner error: $error"),
+              Container(
+                width: double.infinity,
+                height: 50,
+                color: Colors.grey[300],
+                child: const Center(child: Text('بنر تبلیغاتی')),
               ),
           ],
         ),
