@@ -24,21 +24,22 @@ jobs:
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
-          cache: true
 
-      - name: Install Android SDK components
+      - name: Create proper Flutter project
         run: |
-          yes | flutter doctor --android-licenses || true
-          flutter precache --android
-
-      - name: Get dependencies
-        run: flutter pub get
+          flutter create --org com.dastyarmoalem --project-name teacher_assistant temp_project
+          cp -r lib/* temp_project/lib/
+          cp pubspec.yaml temp_project/
+          cd temp_project
+          flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --verbose
+        run: |
+          cd temp_project
+          flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: temp_project/build/app/outputs/flutter-apk/app-release.apk
